@@ -1,10 +1,46 @@
 const fetch = require('node-fetch').default;
 
-const peopleUrl = 'https://swapi.co/api/people/1/';
+const obiwan = 'https://swapi.co/api/people/10/';
 
-async function loadData(url) {
-  const res = await fetch(url);
-  return res.json();
+async function parseLink(link) {
+  const kek = await fetch(link);
+  return kek.json();
 }
 
-loadData(peopleUrl).then(p => console.log(p));
+async function getJsonViaPromise(url) {
+  const obi = await parseLink(url);
+  // const { homeworld, films, vehicles, starships, species } = obi;
+  const arr = await Promise.all([
+    obi.films.map(await parseLink),
+    obi.vehicles.map(await parseLink),
+    obi.starships.map(await parseLink),
+    obi.species.map(await parseLink),
+    parseLink(obi.homeworld),
+  ]);
+  Promise.all([
+    arr[0].forEach((el, i) => {
+      obi.films[i] = el;
+    }),
+    arr[1].forEach((el, i) => {
+      obi.vehicles[i] = el;
+    }),
+    arr[2].forEach((el, i) => {
+      obi.films[i] = el;
+    }),
+    arr[3].forEach((el, i) => {
+      obi.films[i] = el;
+    }),
+  ]);
+  console.log(obi);
+}
+
+getJsonViaPromise(obiwan);
+
+/* Get real output */
+
+// getJsonViaPromise(obiwan).then(arr => console.log(arr));
+/* getJsonViaPromise(obiwan).then(a => {
+  return a[0][0].then(b => console.log(b));
+}); */
+
+// console.log('noice');

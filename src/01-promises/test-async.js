@@ -35,6 +35,9 @@ async function getJsonViaPromise(url) {
 }
 
 getJsonViaPromise(obiwan);
+
+/* Get real output */
+
 // getJsonViaPromise(obiwan).then(arr => console.log(arr));
 /* getJsonViaPromise(obiwan).then(a => {
   return a[0][0].then(b => console.log(b));

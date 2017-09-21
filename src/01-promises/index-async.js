@@ -7,4 +7,4 @@ async function loadData(url) {
   return res.json();
 }
 
-console.log(loadData(peopleUrl));
+loadData(peopleUrl).then(p => console.log(p));
